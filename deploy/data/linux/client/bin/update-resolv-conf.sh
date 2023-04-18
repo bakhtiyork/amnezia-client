@@ -58,9 +58,12 @@ up)
   done
   #echo -n "$R" | $RESOLVCONF -x -p -a "${dev}"
   echo -n "$R" | $RESOLVCONF -x -a "${dev}.inet"
+  sysctl -w net.ipv6.conf.all.disable_ipv6=1
   ;;
 down)
   $RESOLVCONF -d "${dev}.inet"
+  sysctl -w net.ipv6.conf.all.disable_ipv6=0
+  systemctl restart NetworkManager
   ;;
 esac
 
